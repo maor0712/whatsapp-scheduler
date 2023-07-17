@@ -1,0 +1,62 @@
+body{
+    background-color: #075E54;
+    background:linear-gradient(90deg,#25D366,#128C7E,#075E54) left/400% 100%;
+    animation:f 4s infinite alternate linear;
+}
+
+@keyframes f {
+    100% {background-position:right}
+  } 
+
+#container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    height: 100vh;
+  }
+
+
+img{
+    width: 100%;
+    height: 100vh;
+}
+
+#colText{
+ position: relative;
+ padding-left: 50px;
+ width: 80%;
+}
+
+#content{
+    position: absolute;
+    top: 20%;
+}
+
+span{
+    color: #f8f8f8;
+}
+
+#h1-1{
+    font-family: ColfaxAI,Helvetica,sans-serif;
+    font-size: 2.5rem;
+}
+
+
+#p1{
+    font-family: ColfaxAI,Helvetica,sans-serif;
+    font-size: 1.5em ;
+}
+
+#try{
+    background-color: #FF8BFF;
+    border: 0;
+    cursor: pointer;
+    font-family: ColfaxAI,Helvetica,sans-serif;
+    font-size: larger;
+    padding: 10px;
+}
+
+#try:hover{
+    background-color:#fd61fd ;
+}
+  
+
