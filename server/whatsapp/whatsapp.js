@@ -62,28 +62,6 @@ client.on('ready', () => {
     chatNames = chats.map(chat => chat.name);
       
     }
-/*
-     function getChatNames() {
-      return new Promise((resolve, reject) => {
-        client.getChats().then(chats => {
-  chatNames = chats.map(chat => chat.name);
-          resolve(chatNames);
-        }).catch(error => {
-          reject(error);
-        });
-      });
-    } 
-    
-    
-    getChatNames().then(() => {
-      // Chat names are updated
-      readyStatus = true; // Set readyStatus to true
-    }).catch(error => {
-      // Handle any errors that occurred during chat retrieval
-      console.error(error);
-    }); */
-    
-    app.get('/chats', (req, res) => {
     getChatNames().then(() => {
       // Chat names are updated
       readyStatus = true; // Set readyStatus to true
@@ -91,6 +69,8 @@ client.on('ready', () => {
       // Handle any errors that occurred during chat retrieval
       console.error(error);
     });
+    
+    app.get('/chats', (req, res) => {
       res.status(200).json(chatNames);
     });
     
