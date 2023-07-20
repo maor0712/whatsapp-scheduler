@@ -25,13 +25,26 @@ app.use((req,res,next)=>{
   return next()
 })
 
+const client = new Client({
+  
+  puppeteer: {
+    executablePath: '/usr/bin/brave-browser-stable',
+  },
+  authStrategy: new LocalAuth({
+    clientId: "client-one"
+  }),
+  puppeteer: {
+    headless: false,
+  }
+
+});
 
 app.get('/whatsapp',(req,res)=>{
     readyStatus = false;
     windowClose = false;
     needRelode = false;
     
-const client = new Client({
+/* const client = new Client({
   
     puppeteer: {
       executablePath: '/usr/bin/brave-browser-stable',
@@ -43,7 +56,7 @@ const client = new Client({
       headless: false,
     }
 
-  });
+  }); */
 
   //authenticationc 
 client.on('authenticated', (session) => {
@@ -59,16 +72,26 @@ client.on('ready', () => {
      // Function to retrieve chat names
    async function getChatNames() {
     const chats = await client.getChats();
-    chatNames = chats.map(chat => chat.name);
-      
+    let mapChats = chats.map(chat => chat.name);
+      return mapChats;
     }
-    getChatNames().then(() => {
+/*     getChatNames().then(() => {
       // Chat names are updated
       readyStatus = true; // Set readyStatus to true
     }).catch(error => {
       // Handle any errors that occurred during chat retrieval
       console.error(error);
-    });
+    }); */
+
+   async function main(){
+      try{
+      chatNames = await getChatNames();
+        readyStatus = true;
+      }catch(error){
+        console.log(error);
+      }
+    }
+    main()
     
     app.get('/chats', (req, res) => {
       res.status(200).json(chatNames);
@@ -272,6 +295,23 @@ allMessages;
       }) 
 
 
+/*       async function runClient() {
+        try {
+          windowClose = false;
+          await client.initialize();
+
+        } catch (error) {
+          console.error('Initialization error:', error);
+          windowClose = true;
+          // Handle the initialization error
+        }
+      } */
+      
+      runClient();
+
+      res.send('connected!')
+      })
+
       async function runClient() {
         try {
           windowClose = false;
@@ -283,12 +323,5 @@ allMessages;
           // Handle the initialization error
         }
       }
-      
-      runClient();
 
-      res.send('connected!')
-      })
-
-      
-
-module.exports = {app};
+module.exports = {app}; 
