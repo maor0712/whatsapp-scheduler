@@ -17,7 +17,6 @@ app.use(bodyParser.json())
 
 let readyStatus;
 let windowClose;
-let needRelode;
 let chatNames
 
 app.use((req,res,next)=>{
@@ -42,21 +41,6 @@ const client = new Client({
 app.get('/whatsapp',(req,res)=>{
     readyStatus = false;
     windowClose = false;
-    needRelode = false;
-    
-/* const client = new Client({
-  
-    puppeteer: {
-      executablePath: '/usr/bin/brave-browser-stable',
-    },
-    authStrategy: new LocalAuth({
-      clientId: "client-one"
-    }),
-    puppeteer: {
-      headless: false,
-    }
-
-  }); */
 
   //authenticationc 
 client.on('authenticated', (session) => {
@@ -75,13 +59,6 @@ client.on('ready', () => {
     let mapChats = chats.map(chat => chat.name);
       return mapChats;
     }
-/*     getChatNames().then(() => {
-      // Chat names are updated
-      readyStatus = true; // Set readyStatus to true
-    }).catch(error => {
-      // Handle any errors that occurred during chat retrieval
-      console.error(error);
-    }); */
 
    async function main(){
       try{
@@ -102,10 +79,6 @@ client.on('ready', () => {
     app.get('/chats/search', (req,res) => {
             
             const term = req.query.term;
-       /*      let cleanedTerm = term;
-            if (term.startsWith(' ')) {
-              cleanedTerm = term.substring(1); // Remove the '+' sign
-            } */
             const foundChats = chatNames.filter( chat => chat && chat.toLowerCase().includes(term) );
             
             if (foundChats.length > 0) {
@@ -279,34 +252,21 @@ allMessages;
   
    
      app.get('/close', (req,res) => {
+      try{
       client.destroy();
-      readyStatus = false;
-      windowClose = true;
-      needRelode = true;
-      res.json({message:'app been closed'})
+      res.json({message:'app been closed'})}
+      catch(error){
+        res.json({error: error})
+      }
     }) 
 
   
     app.get('/status', (req,res) => {
         res.status(200).json({
           status : readyStatus,
-          windowClose: windowClose,
-          needRelode: needRelode });
+          windowClose: windowClose});
       }) 
 
-
-/*       async function runClient() {
-        try {
-          windowClose = false;
-          await client.initialize();
-
-        } catch (error) {
-          console.error('Initialization error:', error);
-          windowClose = true;
-          // Handle the initialization error
-        }
-      } */
-      
       runClient();
 
       res.send('connected!')

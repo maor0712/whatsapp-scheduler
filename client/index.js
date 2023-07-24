@@ -172,6 +172,14 @@ const filteredData = waitingMesArr.filter(item => {
   return itemDate > currentDate;
 });
 
+const unsentMessages = waitingMesArr.filter(item => {
+    const itemDate = new Date(currentDate.getFullYear(), item.mounth -1, item.day, item.hour, item.minutes);
+    return itemDate < currentDate;
+  });
+
+  unsentMessages.forEach( async obj => {
+   await deleteObj('messages',obj._id)
+  })
 
 
     let html = '';
@@ -231,10 +239,8 @@ async function fetchToWhatsapp(){
 }
 
 async function relodeWhatsapp(){
-    let readyStatus =   await getReadyStatus()
-    if(!readyStatus.needRelode){
-        await fetch('http://localhost:5000/bot/close',{method: 'GET'})
-    }   
+
+        await fetch('http://localhost:5000/bot/close',{method: 'GET'}) 
     
     window.location.reload()
     await fetchToWhatsapp()
