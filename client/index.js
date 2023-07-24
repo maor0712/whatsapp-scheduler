@@ -164,8 +164,18 @@ function createList(arr) {
     let listDiv = document.querySelector("#messagesL");
     const waitingMesArr = arr.filter(obj => (obj.sent === false));
 
+
+const currentDate = new Date();
+
+const filteredData = waitingMesArr.filter(item => {
+  const itemDate = new Date(currentDate.getFullYear(), item.mounth -1, item.day, item.hour, item.minutes);
+  return itemDate > currentDate;
+});
+
+
+
     let html = '';
-    waitingMesArr.forEach(element => {
+    filteredData.forEach(element => {
 
         let day = element.day.toString().padStart(2,'0'); 
         let mounth = element.mounth.toString().padStart(2,'0'); 
